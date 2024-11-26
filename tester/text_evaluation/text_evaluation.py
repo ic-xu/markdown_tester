@@ -108,10 +108,15 @@ class TextEval(object):
     def compare_gt_and_pred(raw_meta_json, raw_pred_json):
         # 获取文本内容 以\n\n分割
         eval_by_text_dict = {}
+        # 输入字符串中提取文本、标题、表格和公式
         model_text_array, title_array, table_array, formula_array = TextEval.extract_text_and_table_from_string(raw_pred_json)
+
+        # 过滤掉自定义结构，图片和文本的引用
         model_text_array = filter_model_text_array(model_text_array)
 
+        # 输入字符串中提取文本、标题、表格和公式
         gt_text_arr, gt_title_arr, gt_table_arr, gt_formula_arr = TextEval.extract_text_and_table_from_string(raw_meta_json)
+        # 过滤掉自定义结构，图片和文本的引用
         gt_text_arr = filter_model_text_array(gt_text_arr)
 
         # 计算段落分数
@@ -119,8 +124,11 @@ class TextEval(object):
 
         # 计算标题分数
         title_score_dict = TextEval.compute_score_and_recall(title_array, gt_title_arr, '#')
-        # 计算标题的树状编辑距离
+
+        # 计算出几级标题出来
         gt_res = TextEval.make_pred_title_html(gt_title_arr)
+
+        # 计算出预测数据的标题（包含几级标题）
         pred_res = TextEval.make_pred_title_html(title_array)
 
         if gt_res == default_html and pred_res == default_html:

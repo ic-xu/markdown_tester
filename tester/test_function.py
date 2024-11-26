@@ -14,7 +14,9 @@ class TestFunction:
         self.order_eval = OrderEval()
 
     def run_compute_metric(self, sample_gt, pred_input):
+        # 计算表格纬度指标
         table_num, table_text_score, table_teds_score, table_struct_score = self.md_tester(sample_gt, pred_input)
+        # 计算文本纬度指标
         total_match_count, gt_len, title_score, title_score_dict, formula_score_dict, status_dict, text_f1 = self.text_eval(sample_gt, pred_input)
         order_res = self.order_eval(sample_gt, pred_input)
 
